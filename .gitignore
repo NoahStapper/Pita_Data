@@ -1,2 +1,6 @@
 
-*.json
+
+
+raw_Data/
+
+.DS_Store

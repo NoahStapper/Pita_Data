@@ -1,0 +1,40 @@
+---
+title: "President Names"
+output: html_notebook
+---
+
+We want to look at the percent of boys named the same first name as the president of the decade they were born into.
+
+```{r}
+library(tidyverse)
+```
+
+Three variables are made of each csv file for the three names.
+
+```{r}
+Grover <- read_csv('Grover.csv')
+
+Theodore <- read_csv('Theodore.csv')
+
+Richard <- read_csv('Richard.csv')
+
+Ronald <- read_csv('Ronald.csv')
+```
+
+Proceed to sum the annual percentages to find one value for the decade to define the popularity of a name.
+
+```{r}
+Grover_Decade <- Grover %>%
+  summarise(Decade_popularity = mean(Popularity))
+
+Theodore_Decade <- Theodore %>%
+  summarise(Decade_popularity = mean(Popularity))
+
+Richard_Decade <- Richard %>%
+  summarise(Decade_popularity = mean(Popularity))
+
+Ronald_Decade <- Ronald %>%
+  summarise(Decade_popularity = mean(Popularity))
+```
+
+Now that the variables have been found, a dataset can be made to plot the data.

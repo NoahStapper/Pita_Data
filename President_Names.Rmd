@@ -132,9 +132,21 @@ wiki_decade_table2 <- wiki_presidential_names %>%
 
 
 decade123 <- (wiki_decade_table2[,2])
-wiki_decade_table[, 'President names'] <- decade123
+wiki_decade_table[, 'President_names'] <- decade123
 
 wiki_decade_table <- filter(wiki_decade_table[0-2,])
+
+
+Percentage123 <- (wiki_decade_table[,3] / wiki_decade_table[,2])
+wiki_decade_table[, 'Percentages Wiki'] <- Percentage123
+
+
+
+#Perf_pres <- read_csv('Perf_Pres.csv')
+
+#external123 <- (Perf_pres[,3])
+#wiki_decade_table[, 'External percentage'] <- external123
+
 
 
   

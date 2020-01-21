@@ -1,0 +1,54 @@
+---
+title: "Graphing Presidents' names"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(dplyr)
+```
+
+Read in csv files for wiki data and external data. Goal of this notebook is to merge the two tables and graph the data.
+
+```{r}
+wiki_original <- read_csv('wiki_decade_table.csv')
+
+ext_original <- read_csv('perf_presidents.csv')
+```
+
+Calculated percentage of males named president name in the decade specified and made a new column.
+
+```{r}
+wiki_original <- wiki_original %>%
+  mutate(percentage = President_names/n)
+```
+
+We want to merge the tables and to have only the columns we are interested in.
+
+```{r}
+wiki_imp <- wiki_original %>%
+  select(correct_decade, percentage)
+
+ext_imp <- ext_original %>%
+  select(name, percentage)
+
+
+wikipedia123 <- (wiki_imp[,2])
+ext_imp[, 'Wikipedia_Percentage'] <- wikipedia123
+
+```
+
+```{r}
+require(ggplot2)
+
+ggplot(data = ext_imp, aes(x = name)) +
+  geom_col(aes(y = percentage)) +
+  geom_col(aes(y = Wikipedia_Percentage)) +
+  xlab('Names (Wikipedia data vs. External data)') +
+  ylab('Percent of male popualtion with specified name') +
+  ggtitle('Popularity of Presidents\' names in the following decade of their election') +
+  scale_color_brewer(name = 'Data', palette = 'Dark2')
+```
+
+
+

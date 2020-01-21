@@ -12,6 +12,7 @@ for first_letter in first_letters: #selects every json file in the folder
 
     with open('presidents.csv', 'a', encoding='utf8') as file: #writing csv file opening function
         #file.write('name,\n')
+        file.write('name,birthyear,\n')
         for datum in data: #choose whatever we want to look for
             #first_name = datum["ontology/birthName"]
             if "ontology/birthName" in datum and "ontology/birthYear" in datum: #and datum[first_name] == "Theodore": #If label is existing key, and corresponding value is country name, add to results list

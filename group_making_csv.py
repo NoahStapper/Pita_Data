@@ -1,7 +1,9 @@
 import json
+import csv
 
-first_letters = 'TG'
+first_letters = 'TGRO'
 for first_letter in first_letters: #selects every json file in the folder
+    print(f'{first_letter}')
     filename = f'{first_letter}_name.json'
 
     with open(filename, encoding='utf8') as file:
@@ -11,11 +13,12 @@ with open('presidents.csv', 'a', encoding='utf8') as file: #writing csv file ope
     #file.write('name,\n')
     for datum in data: #choose whatever we want to look for
         #first_name = datum["ontology/birthName"]
-        if "ontology/birthName" in datum : #and datum[first_name] == "Theodore": #If label is existing key, and corresponding value is country name, add to results list
+        if "ontology/birthName" in datum and "ontology/birthYear" in datum: #and datum[first_name] == "Theodore": #If label is existing key, and corresponding value is country name, add to results list
+            #if datum["ontology/birthYear"] == 
             #if "ontology/birthName" in datum and "Theodore" in datum["ontology/birthName"]:
-            print(datum["ontology/birthName"])
+            #print(datum["ontology/birthName"])
 
-            file.write(f'{datum["ontology/birthName"]}\n') #select what you want to put in the csv file
+                file.write(f'{datum["ontology/birthName"]},{datum["ontology/birthYear"]}\n') #select what you want to put in the csv file
 
 
 

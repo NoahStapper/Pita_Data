@@ -50,21 +50,16 @@ wiki_names <- read_csv('presidents.csv') %>%
 
 
 ```{r}
-wiki_decade <- wiki_names %>%
+# Finding occasions of name = president_name
+wiki_presidential_names <- wiki_names %>%
   mutate(
-    Grover1 = (str_detect(name, "Grover") & birthyear < 1894),
-    Grover_yes = ifelse(Grover1, 'GROVER', 'NOT GROVER')
-  ) %>%
-  mutate(
-    Theodore1 = (str_detect(name, "Theodore") & birthyear < 1911 & birthyear > 1900 ),
-    Theodore_yes = ifelse(Theodore1, 'THEODORE', 'NOT THEODORE')
-  ) %>%
-  mutate(
-    Richard1 = (str_detect(name, "Richard") & birthyear < 1979 & birthyear > 1968 ),
-    Richard_yes = ifelse(Richard1, 'RICHARD', 'NOT RICHARD')
-  ) %>%
-  mutate(
-    Ronald1 = (str_detect(name, "Ronald") & birthyear < 1991 & birthyear > 1980),
-    Ronald_yes = ifelse(Ronald1, 'RONALD', 'NOT RONALD')
-  )
+    presidents_full = case_when(
+      str_detect(name,"Ronald") ~ "Ronald",
+      str_detect(name,"Richard") ~ "Richard",
+      str_detect(name,"Theodore") ~ "Theodore",
+      str_detect(name,"Grover") ~ "Grover",
+      TRUE ~ "Other")
+    )  
+#wiki_presidential_name_data <- wiki_presidential_names %>%
+# new variable
 ```

@@ -121,7 +121,21 @@ wiki_presidential_names <- wiki_names %>%
 
 ```
 ```{r}
-wiki_decade_table <- wiki_decade %>%
+wiki_decade_table <- wiki_presidential_names %>%
+  group_by(correct_decade) %>%
+  count()
+
+
+wiki_decade_table2 <- wiki_presidential_names %>%
   group_by(presidents_full) %>%
   count()
+
+
+decade123 <- (wiki_decade_table2[,2])
+wiki_decade_table[, 'President names'] <- decade123
+
+wiki_decade_table <- filter(wiki_decade_table[0-2,])
+
+
+  
 ```

@@ -42,7 +42,7 @@ Now that the variables have been found, a dataset can be made to plot the data.
 
 ```{r}
 # reading the wikipedia csv file
-wiki_names <- read_csv('presidents.csv') %>%
+wiki_names <- read_csv('presidents.csv') 
   mutate(
     birthyear = as.numeric(birthyear)
   )
@@ -59,13 +59,21 @@ wiki_presidential_names <- wiki_names %>%
       str_detect(name,"Theodore") ~ "Theodore",
       str_detect(name,"Grover") ~ "Grover",
       TRUE ~ "Other")
-    )  
+    )  %>%
+  mutate(
+    correct_decade = case_when(
+      birthyear >= 1980 & birthyear <= 1991 ~ "Ronald Decade",
+      birthyear >= 1968 & birthyear <= 1979 ~ "Richard Decade",
+      birthyear >= 1900 & birthyear <= 1911 ~ "Theodore Decade",
+      birthyear >= 1884 & birthyear <= 1895 ~ "Grover Decade",
+      TRUE ~ "Other")
+    )
 
 # Adding selection for decade
-wiki_presidential_name_data <- wiki_presidential_names %>%
-  mutate(presidents_full = case_when(
-    int_detect(birthyear, decade_grover))
-  )
+#wiki_presidential_name_data <- wiki_presidential_names %>%
+ # mutate(presidents_full = case_when(
+  #  int_detect(birthyear, decade_grover))
+  #)
   
 # new variable
 # group by president_full & decade

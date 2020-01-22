@@ -12,13 +12,13 @@ library(tidyverse)
 Three variables are made of each csv file for the three names.
 
 ```{r}
-Grover <- read_csv('Grover.csv')
+Grover <- read_csv('External_data_csv\\Grover.csv')
 
-Theodore <- read_csv('Theodore.csv')
+Theodore <- read_csv('External_data_csv\\Theodore.csv')
 
-Richard <- read_csv('Richard.csv')
+Richard <- read_csv('External_data_csv\\Richard.csv')
 
-Ronald <- read_csv('Ronald.csv')
+Ronald <- read_csv('External_data_csv\\Ronald.csv')
 ```
 
 Proceed to sum the annual percentages to find one value for the decade to define the popularity of a name.
@@ -46,10 +46,6 @@ wiki_names <- read_csv('presidents.csv')
 
 ```
 
-
-
-
-
 ```{r}
 # Finding occasions of name = president_name
 wiki_presidential_names <- wiki_names %>%
@@ -73,7 +69,7 @@ wiki_presidential_names <- wiki_names %>%
 ```
 
 ```{r}
-#summing up the relevant data
+#summing up the relevant data 
 wiki_decade_table <- wiki_presidential_names %>%
   group_by(correct_decade, presidents_full) %>%
   mutate(
@@ -84,7 +80,4 @@ wiki_decade_table <- wiki_presidential_names %>%
 
 
 wiki_decade_table <- filter(wiki_decade_table[4-7,])
-
-
-  
 ```

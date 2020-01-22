@@ -62,79 +62,26 @@ wiki_presidential_names <- wiki_names %>%
     )  %>%
   mutate(
     correct_decade = case_when(
-      birthyear >= 1980 & birthyear <= 1991 ~ "Ronald Decade",
-      birthyear >= 1968 & birthyear <= 1979 ~ "Richard Decade",
-      birthyear >= 1900 & birthyear <= 1911 ~ "Theodore Decade",
-      birthyear >= 1884 & birthyear <= 1895 ~ "Grover Decade",
+      birthyear >= 1980 & birthyear <= 1991 ~ "Ronald",
+      birthyear >= 1968 & birthyear <= 1979 ~ "Richard",
+      birthyear >= 1900 & birthyear <= 1911 ~ "Theodore",
+      birthyear >= 1884 & birthyear <= 1895 ~ "Grover",
       TRUE ~ "Other")
     )
 
-# Adding selection for decade
-#wiki_presidential_name_data <- wiki_presidential_names %>%
- # mutate(presidents_full = case_when(
-  #  int_detect(birthyear, decade_grover))
-  #)
-  
-# new variable
-# group by president_full & decade
-# summarize()
-
-  # 
-  # mutate(
-  #   Grover1 = (str_detect(name, "Grover") & birthyear < 1894),
-  #   Grover_yes = ifelse(Grover1, 'GROVER', 'NOT GROVER')
-  # ) %>%
-  # mutate(
-  #   Theodore1 = (str_detect(name, "Theodore") & birthyear < 1911 & birthyear > 1900 ),
-  #   Theodore_yes = ifelse(Theodore1, 'THEODORE', 'NOT THEODORE')
-  # ) %>%
-  # mutate(
-  #   Richard1 = (str_detect(name, "Richard") & birthyear < 1979 & birthyear > 1968 ),
-  #   Richard_yes = ifelse(Richard1, 'RICHARD', 'NOT RICHARD')
-  # ) %>%
-  # mutate(
-  #   Ronald1 = (str_detect(name, "Ronald") & birthyear < 1991 & birthyear > 1980),
-  #   Ronald_yes = ifelse(Ronald1, 'RONALD', 'NOT RONALD')
-  # ) %>%
-  #   
-  # 
-  # mutate(
-  #   presidents_full = case_when(
-  #     Ronald1 ~ "Ronald",
-  #     Richard1 ~ "Richard",
-  #     Theodore1 ~ "Theodore",
-  #     Grover1 ~ "Grover",
-  #     TRUE ~ ""
-  #     
-  #   )
-  # )
-#  mutate(
-#    presidents_full = '',
- #   presidents_full = ifelse(Ronald1, "Ronald", presidents_full)
-  #)
-#    presidentsfull = if(Ronald1 == TRUE 'RONALD') if (Grover1 == TRUE 'GROVER') if (Richard1 == TRUE 'RICHARD') if (Theodore1 == TRUE 'THEODORE') else ('none')
-
-
-
-
-
-
 ```
+
 ```{r}
 wiki_decade_table <- wiki_presidential_names %>%
-  group_by(correct_decade) %>%
-  count()
+  group_by(correct_decade, presidents_full) %>%
+  mutate(
+    Presidents_coincide = presidents_full == correct_decade
+  ) %>%
+  group_by(correct_decade, Presidents_coincide) %>%
+  summarize(count = n())
 
 
-wiki_decade_table2 <- wiki_presidential_names %>%
-  group_by(presidents_full) %>%
-  count()
-
-
-decade123 <- (wiki_decade_table2[,2])
-wiki_decade_table[, 'President names'] <- decade123
-
-wiki_decade_table <- filter(wiki_decade_table[0-2,])
+wiki_decade_table <- filter(wiki_decade_table[4-7,])
 
 
   

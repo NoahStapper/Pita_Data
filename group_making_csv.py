@@ -5,7 +5,7 @@ import csv
 data = []
 first_letters = 'TGRO' # T for Theodore, G for Grover, R for Richard and O for Ronald
 for first_letter in first_letters: #selects every json file in the folder 
-    filename = f'{first_letter}_name.json'
+    filename = f"Filtered_data_for_python/{first_letter}_name.json"
 
     with open(filename, encoding='utf8') as file:
         data = data + json.load(file) #Reads in every json file and adds it to the 'data' list

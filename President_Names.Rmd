@@ -13,6 +13,7 @@ library(dplyr)
 Three variables are made of each csv file for the three names.
 
 ```{r}
+# IMPORTANT: Use \\ to separate folder in windows, use / in mac
 Grover <- read_csv('External_data_csv_presidents\\Grover.csv')
 
 Theodore <- read_csv('External_data_csv_presidents\\Theodore.csv')

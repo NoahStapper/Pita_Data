@@ -131,10 +131,10 @@ ggplot(data = all_data_tall, aes(x = name, fill = Data)) +
   geom_col(aes(y = Percent), position = 'dodge') +
   xlab('Names (Wikipedia data vs. External data)') +
   ylab('Percent of male popualtion with specified name') +
-  ggtitle('Popularity of Presidents\' names in the following decade of their election') +
+  ggtitle('Popularity of Presidents\' names') +
   scale_color_brewer(name = 'Data', palette = 'Accent')
 
-ggsave('President_names_popularity.pdf')
+ggsave('President_names_popularity.png')
 ```
 
 ```{r}

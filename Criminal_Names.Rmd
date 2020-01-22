@@ -1,0 +1,151 @@
+---
+title: "Criminal Names: filtering and plotting"
+output: html_notebook
+---
+
+We want to look at the percent of boys named the same first name as one of the criminals of the decade they were born into.
+
+```{r}
+library(tidyverse)
+library(dplyr)
+```
+
+Three variables are made of each csv file for the three names.
+
+```{r}
+Herman <- read_csv('Herman.csv')
+
+Lee <- read_csv('Lee.csv')
+
+Ted <- read_csv('Ted.csv')
+
+Anthony <- read_csv('Anthony.csv')
+```
+
+Proceed to sum the annual percentages to find one value for the decade to define the popularity of a name.
+
+```{r}
+Herman_Decade <- Herman %>%
+  group_by(Name) %>%
+  summarise(Decade_popularity = mean(Percent))
+write.csv(Herman_Decade, 'Herman_Decade.csv')
+
+Lee_Decade <- Lee %>%
+  group_by(Name) %>%
+  summarise(Decade_popularity = mean(Percent))
+write.csv(Lee_Decade, 'Lee_Decade.csv')
+
+Ted_Decade <- Ted %>%
+  group_by(Name) %>%
+  summarise(Decade_popularity = mean(Percent))
+write.csv(Ted_Decade, 'Ted_Decade.csv')
+
+Anthony_Decade <- Anthony %>%
+  group_by(Name) %>%
+  summarise(Decade_popularity = mean(Percent))
+write.csv(Anthony_Decade, 'Anthony_Decade.csv')
+```
+
+Now that the variables have been found, a dataset can be made to plot the data once the wiki dataset has been filtered.
+
+
+```{r}
+#Reading the wikipedia csv file
+wiki_names <- read_csv('murderers.csv') 
+```
+
+Now that we have read in the wiki datafile that has been filtered in Bash and Python, we can find cases when the name of the person born in the decade equals the name of the president in the decade.
+
+```{r}
+# Finding occasions of name = president_name
+wiki_murderer_names <- wiki_names %>%
+  mutate(
+    murderer_full = case_when(
+      str_detect(name,"Lee") ~ "Lee",
+      str_detect(name,"Herman") ~ "Herman",
+      str_detect(name,"Ted") ~ "Ted",
+      str_detect(name,"Anthony") ~ "Anthony",
+      TRUE ~ "Other")
+    )  %>%
+  mutate(
+    correct_decade = case_when(
+      birthyear >= 1964 & birthyear <= 1973 ~ "Lee",
+      birthyear >= 1894 & birthyear <= 1903 ~ "Herman",
+      birthyear >= 1975 & birthyear <= 1984 ~ "Ted",
+      birthyear >= 1994 & birthyear <= 2003 ~ "Anthony",
+      TRUE ~ "Other")
+    )
+
+```
+
+```{r}
+#summing up the relevant data and making a table
+wiki_decade_table <- wiki_murderer_names %>%
+  group_by(correct_decade, murderer_full) %>%
+  mutate(
+    Murderers_coincide = murderer_full == correct_decade
+  ) %>%
+  group_by(correct_decade, Murderers_coincide) %>%
+  summarize(count = n())
+
+
+#wiki_decade_table <- filter(wiki_decade_table[4-7,])
+```
+
+Now that we have the dataset from the wiki and real data, we can read in csv files for both, merge them and plot together.
+
+```{r}
+wiki_original <- read_csv('wiki_decade_table.csv')
+
+ext_original <- read_csv('Creepy_Criminals.csv')
+```
+
+Calculated percentage of males named president name in the decade specified and made a new column.
+
+```{r}
+wiki_original <- wiki_original %>%
+  mutate(percentage = President_names/n)
+```
+
+We want to merge the tables and to have only the columns we are interested in.
+
+```{r}
+wiki_imp <- wiki_original %>%
+  select(correct_decade, percentage)
+
+ext_imp <- ext_original %>%
+  select(Name, Decade_popularity)
+
+
+wikipedia123 <- (wiki_imp[,2])
+ext_imp[, 'Wikipedia_Percentage'] <- wikipedia123
+
+```
+
+```{r}
+all_data_tall <- ext_imp %>%
+  pivot_longer(-Name, names_to = 'Data', values_to = 'Percent')
+
+all_data_tall <- all_data_tall %>%
+  mutate(Data = ifelse(Data == 'Decade_popularity', 'External', 'Wikipedia'))
+
+all_data_tall <- all_data_tall %>%
+  mutate(Percent = Percent*100)
+    
+```
+
+```{r}
+ggplot(data = all_data_tall, aes(x = Name, fill = Data)) +
+  geom_col(aes(y = Percent), position = 'dodge') +
+  xlab('Names (Wikipedia data vs. External data)') +
+  ylab('Percent of male popualtion with specified name') +
+  ggtitle('Popularity of Criminal\'s names') +
+  scale_color_brewer(name = 'Data', palette = 'Accent')
+
+ggsave('Criminal_names_popularity.pdf')
+```
+
+```{r}
+library(xtable)
+xtable(all_data_tall)
+```

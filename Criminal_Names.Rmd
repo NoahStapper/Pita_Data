@@ -13,13 +13,13 @@ library(dplyr)
 Three variables are made of each csv file for the three names.
 
 ```{r}
-Herman <- read_csv('Herman.csv')
+Herman <- read_csv('External_data_csv_criminals\\Herman.csv')
 
-Lee <- read_csv('Lee.csv')
+Lee <- read_csv('External_data_csv_criminals\\Lee.csv')
 
-Ted <- read_csv('Ted.csv')
+Ted <- read_csv('External_data_csv_criminals\\Ted.csv')
 
-Anthony <- read_csv('Anthony.csv')
+Anthony <- read_csv('External_data_csv_criminals\\Anthony.csv')
 ```
 
 Proceed to sum the annual percentages to find one value for the decade to define the popularity of a name.

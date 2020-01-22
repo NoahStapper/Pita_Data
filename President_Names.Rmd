@@ -43,10 +43,11 @@ Now that the variables have been found, a dataset can be made to plot the data.
 ```{r}
 # reading the wikipedia csv file
 wiki_names <- read_csv('presidents.csv') 
-  mutate(
-    birthyear = as.numeric(birthyear)
-  )
+
 ```
+
+
+
 
 
 ```{r}
@@ -72,6 +73,7 @@ wiki_presidential_names <- wiki_names %>%
 ```
 
 ```{r}
+#summing up the relevant data
 wiki_decade_table <- wiki_presidential_names %>%
   group_by(correct_decade, presidents_full) %>%
   mutate(

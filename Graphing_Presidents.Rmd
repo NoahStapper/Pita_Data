@@ -39,16 +39,31 @@ ext_imp[, 'Wikipedia_Percentage'] <- wikipedia123
 ```
 
 ```{r}
-require(ggplot2)
+all_data_tall <- ext_imp %>%
+  pivot_longer(-name, names_to = 'Data', values_to = 'Percent')
 
-ggplot(data = ext_imp, aes(x = name)) +
-  geom_col(aes(y = percentage)) +
-  geom_col(aes(y = Wikipedia_Percentage)) +
-  xlab('Names (Wikipedia data vs. External data)') +
-  ylab('Percent of male popualtion with specified name') +
-  ggtitle('Popularity of Presidents\' names in the following decade of their election') +
-  scale_color_brewer(name = 'Data', palette = 'Dark2')
+all_data_tall <- all_data_tall %>%
+  mutate(Data = ifelse(Data == 'percentage', 'External', 'Wikipedia'))
+
+all_data_tall <- all_data_tall %>%
+  mutate(Percent = Percent*100)
+    
 ```
 
 
+```{r}
+ggplot(data = all_data_tall, aes(x = name, fill = Data)) +
+  geom_col(aes(y = Percent), position = 'dodge') +
+  xlab('Names (Wikipedia data vs. External data)') +
+  ylab('Percent of male popualtion with specified name') +
+  ggtitle('Popularity of Presidents\' names in the following decade of their election') +
+  scale_color_brewer(name = 'Data', palette = 'Accent')
+
+ggsave('President_names_popularity.pdf')
+```
+
+```{r}
+library(xtable)
+xtable(all_data_tall)
+```
 

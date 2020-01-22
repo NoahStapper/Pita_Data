@@ -13,13 +13,15 @@ library(dplyr)
 Three variables are made of each csv file for the three names.
 
 ```{r}
-Herman <- read_csv('External_data_csv_criminals\\Herman.csv')
 
-Lee <- read_csv('External_data_csv_criminals\\Lee.csv')
+#use two backslashes if running in windows \\
+Herman <- read_csv('External_data_csv_criminals/Herman.csv')
 
-Ted <- read_csv('External_data_csv_criminals\\Ted.csv')
+Lee <- read_csv('External_data_csv_criminals/Lee.csv')
 
-Anthony <- read_csv('External_data_csv_criminals\\Anthony.csv')
+Ted <- read_csv('External_data_csv_criminals/Ted.csv')
+
+Anthony <- read_csv('External_data_csv_criminals/Anthony.csv')
 ```
 
 Proceed to sum the annual percentages to find one value for the decade to define the popularity of a name.
@@ -82,11 +84,11 @@ wiki_murderer_names <- wiki_names %>%
 #summing up the relevant data and making a table
 wiki_decade_table <- wiki_murderer_names %>%
   group_by(correct_decade, murderer_full) %>%
-  mutate(
-    Murderers_coincide = murderer_full == correct_decade
-  ) %>%
+  mutate(Murderers_coincide = ifelse(murderer_full == correct_decade, 'coincide', 'nope')) %>%
   group_by(correct_decade, Murderers_coincide) %>%
   summarize(count = n())
+write.csv(wiki_decade_table, 'wiki_decade_crime.csv')
+
 
 
 #wiki_decade_table <- filter(wiki_decade_table[4-7,])
@@ -95,7 +97,7 @@ wiki_decade_table <- wiki_murderer_names %>%
 Now that we have the dataset from the wiki and real data, we can read in csv files for both, merge them and plot together.
 
 ```{r}
-wiki_original <- read_csv('wiki_decade_table.csv')
+wiki_original <- read_csv('wiki_decade_crime.csv')
 
 ext_original <- read_csv('Creepy_Criminals.csv')
 ```
@@ -103,14 +105,28 @@ ext_original <- read_csv('Creepy_Criminals.csv')
 Calculated percentage of males named president name in the decade specified and made a new column.
 
 ```{r}
-wiki_original <- wiki_original %>%
-  mutate(percentage = President_names/n)
+# wiki_decade_table <- wiki_decade_table %>%
+#   ungroup() %>%
+#   add_row(correct_decade = 'Ted', Murderers_coincide = 'coincide', count = 0)
+# 
+# wiki_decade_table <- wiki_decade_table %>%
+#   ungroup() %>%
+#   add_row(correct_decade = 'Herman', Murderers_coincide = 'coincide', count = 0)
+
+wiki_decade_table <- wiki_decade_table %>%
+  pivot_wider(names_from = Murderers_coincide, 
+              values_from = count, 
+              values_fill = list(count =0))
+  
+
+wiki_decade_table <- wiki_decade_table %>%
+  mutate(percentage =coincide/nope)
 ```
 
 We want to merge the tables and to have only the columns we are interested in.
 
 ```{r}
-wiki_imp <- wiki_original %>%
+wiki_imp <- wiki_decade_table %>%
   select(correct_decade, percentage)
 
 ext_imp <- ext_original %>%

@@ -1,7 +1,7 @@
 import json
 import csv
 
-# Doing the same thing for murderers
+# Doing the same thing for murderers.
 data = []
 first_letters = 'AHLT' # T for Ted Bundy, H for Herman Webster Mudgett, L for Lee Harvey Oswald and A for Anthony Balaam
 for first_letter in first_letters: #selects every json file in the folder 

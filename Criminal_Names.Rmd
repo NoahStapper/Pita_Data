@@ -154,7 +154,7 @@ all_data_tall <- all_data_tall %>%
 ggplot(data = all_data_tall, aes(x = Name, fill = Data)) +
   geom_col(aes(y = Percent), position = 'dodge') +
   xlab('Names (Wikipedia data vs. External data)') +
-  ylab('Percent of male popualtion with specified name') +
+  ylab('Percent of popualtion with specified name') +
   ggtitle('Popularity of Criminal\'s names') +
   scale_color_brewer(name = 'Data', palette = 'Accent')
 
